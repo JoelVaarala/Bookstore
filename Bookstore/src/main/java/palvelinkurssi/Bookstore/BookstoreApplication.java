@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 
 import palvelinkurssi.Bookstore.Domain.Book;
 import palvelinkurssi.Bookstore.Domain.BookRepository;
+import palvelinkurssi.Bookstore.Domain.Category;
+import palvelinkurssi.Bookstore.Domain.CategoryRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -19,12 +21,21 @@ public class BookstoreApplication {
 		SpringApplication.run(BookstoreApplication.class, args);
 	}
 		@Bean
-		public CommandLineRunner bookDemo(BookRepository bookRepository) { 
+		public CommandLineRunner bookDemo(BookRepository bookRepository, CategoryRepository categoryRepository) { 
 			return (args) -> {
 				log.info("save a couple of books");
+				categoryRepository.save(new Category("Fantasy"));
+				categoryRepository.save(new Category("Biography"));
+				categoryRepository.save(new Category("Poetry"));
+				
 				bookRepository.save(new Book((long) 1234, "title", "Author", 1998, 20.00));
 				bookRepository.save(new Book((long) 4321, "The Rock", "Ramon", 1876, 10.00));
 				bookRepository.save(new Book((long) 9999, "Little Prince", "Antoine", 2000, 33.00));
+				
+				log.info("fetch all categories");
+				for (Category category : categoryRepository.findAll()) {
+					log.info(category.toString());
+				}
 				
 				log.info("fetch all books");
 				for (Book book : bookRepository.findAll()) {
