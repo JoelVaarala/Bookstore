@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import palvelinkurssi.Bookstore.Domain.BookRepository;
 import palvelinkurssi.Bookstore.Domain.Book;
+import palvelinkurssi.Bookstore.Domain.CategoryRepository;
 
 @Controller
 public class BooktstoreController {
@@ -19,12 +20,8 @@ public class BooktstoreController {
 	@Autowired
 	BookRepository bookRepository;
 	
-	@RequestMapping(value="/index", method=RequestMethod.GET)
-	public String getAllBooks(Model model){	
-		List<Book> books = (List<Book>) bookRepository.findAll();
-			model.addAttribute("books", books);
-		return "listbooks";
-	}
+	@Autowired
+	CategoryRepository categoryRepository;
 	
 		// kirjalistaus
 		@RequestMapping(value = "/books", method = RequestMethod.GET)
@@ -39,6 +36,7 @@ public class BooktstoreController {
 		@RequestMapping(value = "/newbook", method = RequestMethod.GET)
 		public String getNewBookForm(Model model) {
 			model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
+			model.addAttribute("category", categoryRepository.findAll());
 			return "addBook"; // palauttaa thymeleaf templaten addBook.html
 		}
 
@@ -55,6 +53,7 @@ public class BooktstoreController {
 		public String editBook(@PathVariable("id") Long bookId, Model model) {
 			// tallennetaan kyseisen id:n kirja-olio modelille, jotta editBook saa oikeat tiedot käsiteltäväksi
 			model.addAttribute("book", bookRepository.findById(bookId));
+			model.addAttribute("category", categoryRepository.findAll());
 			return "editBook";
 		}
 
