@@ -28,9 +28,9 @@ public class BookstoreApplication {
 				categoryRepository.save(new Category("Biography"));
 				categoryRepository.save(new Category("Poetry"));
 				
-				bookRepository.save(new Book((long) 1234, "title", "Author", 1998, 20.00));
-				bookRepository.save(new Book((long) 4321, "The Rock", "Ramon", 1876, 10.00));
-				bookRepository.save(new Book((long) 9999, "Little Prince", "Antoine", 2000, 33.00));
+				bookRepository.save(new Book((long) 1234, "title", "Author", 1998, 20.00, categoryRepository.findByName("Fantasy").get(0)));
+				bookRepository.save(new Book((long) 4321, "The Rock", "Ramon", 1876, 10.00, categoryRepository.findByName("Biography").get(0)));
+				bookRepository.save(new Book((long) 9999, "Little Prince", "Antoine", 2000, 33.00, categoryRepository.findByName("Poetry").get(0)));
 				
 				log.info("fetch all categories");
 				for (Category category : categoryRepository.findAll()) {
