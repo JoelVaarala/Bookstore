@@ -25,6 +25,12 @@ public class BookstoreApplication {
 			return (args) -> {
 				log.info("save a couple of books");
 				categoryRepository.save(new Category("Fantasy"));
+				
+				// Vaihtoehtoinen tyyli (siistimpi)
+				// Category category1 = new Category("Sci-fi");
+				// categoryRepository.save(category1)
+				// ja viittaus sama ennen loppua  bookRepository ... 20,00, category1));
+				
 				categoryRepository.save(new Category("Biography"));
 				categoryRepository.save(new Category("Poetry"));
 				
