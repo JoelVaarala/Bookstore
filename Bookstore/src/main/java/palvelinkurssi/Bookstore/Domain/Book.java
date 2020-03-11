@@ -8,8 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore; -- @JsonIgnore
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
+// @JsonManagedReference -- jos halutaan viedä yhteys json:lle
 
 
 	@Entity
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 	private double price;
 	
 	@ManyToOne
-	@JsonManagedReference  // if wanted json without reference use "@JsonIgnore"
+	@JsonIgnore
 	@JoinColumn(name = "idCategory")
 	private Category category;
 	

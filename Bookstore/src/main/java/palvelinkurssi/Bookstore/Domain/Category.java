@@ -9,8 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+// @JsonBackReference -- annotaatio yhteyden säilyttämiseen (json:lle)
 
 	@Entity
 	public class Category {
@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 		private Long idCategory;
 		private String name;
 		
-		@JsonBackReference
 		@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 		private List<Book> books;
 		
