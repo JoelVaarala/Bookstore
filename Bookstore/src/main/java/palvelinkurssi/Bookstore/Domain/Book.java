@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore; -- @JsonIgnore
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 	@Entity
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 	private double price;
 	
 	@ManyToOne
-	@JsonIgnore
+	@JsonManagedReference
 	@JoinColumn(name = "idCategory")
 	private Category category;
 	
