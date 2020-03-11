@@ -28,10 +28,10 @@ public class BooktstoreController {
 		// kirjalistaus
 		@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 		public String getBooks(Model model) {
-				List<Book> books =  (List<Book>) bookRepository.findAll(); // haeta tietokannasta autot
+				List<Book> books =  (List<Book>) bookRepository.findAll(); // haeta tietokannasta kirjat
 				model.addAttribute("books", books); // välitetään kirjalista templatelle model-olion avulla
-				return "listBooks"; // DispatherServlet saa tämän template-nimen ja kutsuu seuraavaksi carlist.html-templatea,
-									// joka prosessoidaan palvelimella
+				return "listBooks"; // DispatherServlet saa tämän template-nimen ja kutsuu seuraavaksi html-templatea,
+									// ...joka prosessoidaan palvelimella
 		}
 		
 		// Rest-service for getting all book (JSON)
