@@ -1,6 +1,7 @@
 package palvelinkurssi.Bookstore.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import palvelinkurssi.Bookstore.Domain.BookRepository;
 import palvelinkurssi.Bookstore.Domain.Book;
@@ -18,18 +20,30 @@ import palvelinkurssi.Bookstore.Domain.CategoryRepository;
 public class BooktstoreController {
 	
 	@Autowired
-	BookRepository bookRepository;
+	private BookRepository bookRepository;
 	
 	@Autowired
-	CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository;
 	
 		// kirjalistaus
-		@RequestMapping(value = "/books", method = RequestMethod.GET)
+		@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 		public String getBooks(Model model) {
 				List<Book> books =  (List<Book>) bookRepository.findAll(); // haeta tietokannasta autot
 				model.addAttribute("books", books); // välitetään kirjalista templatelle model-olion avulla
 				return "listBooks"; // DispatherServlet saa tämän template-nimen ja kutsuu seuraavaksi carlist.html-templatea,
 									// joka prosessoidaan palvelimella
+		}
+		
+		// Rest-service for getting all book (JSON)
+		@RequestMapping(value="/books", method = RequestMethod.GET)
+		public @ResponseBody List<Book> bookListRest() {
+			return (List<Book>) bookRepository.findAll();
+		}
+		
+		// Rest-service for getting Book by Id
+		@RequestMapping(value="/books/{id}", method = RequestMethod.GET)
+		public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long id) {
+			return bookRepository.findById(id);
 		}
 
 		// tyhjän kirjalomakkeen muodostaminen

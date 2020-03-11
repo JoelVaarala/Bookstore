@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 	@Entity
 	public class Book {
@@ -22,6 +24,7 @@ import javax.persistence.ManyToOne;
 	private double price;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "idCategory")
 	private Category category;
 	
