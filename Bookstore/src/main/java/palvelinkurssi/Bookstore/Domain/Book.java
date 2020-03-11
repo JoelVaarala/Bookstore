@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 	private double price;
 	
 	@ManyToOne
-	@JsonManagedReference
+	@JsonManagedReference  // if wanted json without reference use "@JsonIgnore"
 	@JoinColumn(name = "idCategory")
 	private Category category;
 	
