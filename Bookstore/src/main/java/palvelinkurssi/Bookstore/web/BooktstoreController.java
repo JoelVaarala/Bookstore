@@ -25,6 +25,12 @@ public class BooktstoreController {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+		// sisäänkirjautuminen
+		@RequestMapping(value="/login")
+		public String login() {	
+			return "loginPage";
+		}
+	
 		// kirjalistaus
 		@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 		public String getBooks(Model model) {
@@ -59,7 +65,7 @@ public class BooktstoreController {
 		public String saveBook(@ModelAttribute Book book) {
 			// talletetaan yhden kirjan tiedot tietokantaan
 			bookRepository.save(book);	// save osaa SQL insert tai update.
-			return "redirect:/books"; // ohjaa "uuteen" endpointtiin-selaimella
+			return "redirect:/booklist"; // ohjaa "uuteen" endpointtiin-selaimella
 		}
 		
 		// kirjan muokkaus
@@ -75,7 +81,7 @@ public class BooktstoreController {
 		@RequestMapping(value = "/deletebook/{id}", method = RequestMethod.GET)
 		public String deleteBook(@PathVariable("id") Long bookId) {
 			bookRepository.deleteById(bookId);
-			return "redirect:../books"; // .. päästään end-pointin polussa ylöspäin
+			return "redirect:../booklist"; // .. päästään end-pointin polussa ylöspäin
 		}
 		
 
