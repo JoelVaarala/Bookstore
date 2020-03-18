@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,6 +54,7 @@ public class BooktstoreController {
 		}
 
 		// tyhjän kirjalomakkeen muodostaminen
+		@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 		@RequestMapping(value = "/newbook", method = RequestMethod.GET)
 		public String getNewBookForm(Model model) {
 			model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
@@ -61,6 +63,7 @@ public class BooktstoreController {
 		}
 
 		// kirjalomakkeella syötettyjen tietojen vastaanotto ja tallennus
+		@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 		@RequestMapping(value = "/save", method = RequestMethod.POST)
 		public String saveBook(@ModelAttribute Book book) {
 			// talletetaan yhden kirjan tiedot tietokantaan
@@ -69,6 +72,7 @@ public class BooktstoreController {
 		}
 		
 		// kirjan muokkaus
+		@PreAuthorize("hasAuthority('ADMIN')")
 		@RequestMapping(value = "/edit/{id}") // edit endpointin lisäksi url sisältää kyseisen kirjan id:n
 		public String editBook(@PathVariable("id") Long bookId, Model model) {
 			// tallennetaan kyseisen id:n kirja-olio modelille, jotta editBook saa oikeat tiedot käsiteltäväksi
@@ -78,6 +82,7 @@ public class BooktstoreController {
 		}
 
 		// kirjan poisto
+		@PreAuthorize("hasAuthority('ADMIN')")
 		@RequestMapping(value = "/deletebook/{id}", method = RequestMethod.GET)
 		public String deleteBook(@PathVariable("id") Long bookId) {
 			bookRepository.deleteById(bookId);

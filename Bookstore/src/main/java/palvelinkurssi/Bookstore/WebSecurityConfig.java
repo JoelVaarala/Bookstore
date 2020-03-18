@@ -1,22 +1,25 @@
 package palvelinkurssi.Bookstore;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+import palvelinkurssi.Bookstore.web.UserDetailsServiceBS;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	@Autowired
+    private UserDetailsServiceBS userDetailsService;
 	
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -24,10 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests().antMatchers("/css/**").permitAll() // Enable css when logged out ++ haettavat tyylit yms kaikille avoinna
         .and()
         .authorizeRequests()
+         /*
         .antMatchers("/", "/booklist").permitAll() // sallittuja osoit. kaikille ("permitAll()")
-        .antMatchers("/add", "/save").hasRole("USER") // user voi tehdä mutta kuka vain ei
+        .antMatchers("/save", "/save/**", "/edit/**", "/newbook").hasAnyRole("USER","ADMIN") // user ja admin sallitut url:t
         .antMatchers("/delete/{id}").hasRole("ADMIN")	// vain admin voi tehdä poiston
-          .anyRequest().authenticated() // anyReq --> "else" jos ei sovi niin kaikki muut endpointit autentikaation alaisesti
+        .anyRequest().authenticated() // anyReq --> "else" jos ei sovi niin kaikki muut endpointit autentikaation alaisesti
+          */
           .and()
       .formLogin()
           .loginPage("/login") // (ei tarvita login endpointtia) -- kirjasto tarjoaa valmiin login ratkaisun!
@@ -35,31 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
           .permitAll()
           .and()
       .logout()
-          .permitAll();
+          .permitAll()
+        	.and();
     }
     
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        List<UserDetails> users = new ArrayList();
-    	UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-
-    	users.add(user);
-    	
-    	user = User.withDefaultPasswordEncoder()
-                   .username("admin")
-                   .password("password")
-                   .roles("USER", "ADMIN")
-                   .build();
-    	
-    	users.add(user);
-    	
-        return new InMemoryUserDetailsManager(users);
+	@Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
 }
