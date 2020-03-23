@@ -71,7 +71,7 @@ public class BooktstoreController {
 			return "redirect:/booklist"; // ohjaa "uuteen" endpointtiin-selaimella
 		}
 		
-		// kirjan muokkaus
+		// kirjan muokkaus 
 		@PreAuthorize("hasAuthority('ADMIN')")
 		@RequestMapping(value = "/edit/{id}") // edit endpointin lisäksi url sisältää kyseisen kirjan id:n
 		public String editBook(@PathVariable("id") Long bookId, Model model) {
