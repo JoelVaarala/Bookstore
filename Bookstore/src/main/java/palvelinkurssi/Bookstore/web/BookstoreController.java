@@ -18,7 +18,7 @@ import palvelinkurssi.Bookstore.Domain.Book;
 import palvelinkurssi.Bookstore.Domain.CategoryRepository;
 
 @Controller
-public class BooktstoreController {
+public class BookstoreController {
 	
 	@Autowired
 	private BookRepository bookRepository;
