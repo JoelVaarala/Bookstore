@@ -1,7 +1,7 @@
 package palvelinkurssi.Bookstore;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +19,12 @@ public class UserRepositoryTest {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Test
+    public void searchByIdCheckIfNull() {
+        User user = repository.findById((long) 1).get();
+        assertNotNull(user);
+    }
 	
 	@Test
 	public void AddUser() {
